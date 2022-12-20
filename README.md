@@ -1,1 +1,1 @@
-# calculator
+This project will have a working calculator with a GUI.
