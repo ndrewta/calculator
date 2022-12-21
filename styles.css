@@ -8,14 +8,14 @@ body {
     display: grid;
     justify-content: center;
     align-items: center;
-    width: 275px;
+    width: 350px;
     border: 1px solid black;
     margin-top: 25%;
 }
 
 #output-box {
     border: 1px solid black;
-    width: 215px;
+    width: 290px;
     padding: 5px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -25,9 +25,9 @@ body {
 
 #btn-container {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     margin-bottom: 20px;
-    width: 225px;
+    width: 300px;
     border: 1px solid black;
 }
 
