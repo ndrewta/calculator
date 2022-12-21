@@ -1,0 +1,38 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    width: 275px;
+    border: 1px solid black;
+    margin-top: 25%;
+}
+
+#output-box {
+    border: 1px solid black;
+    width: 215px;
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 30px;
+    direction: rtl;
+}
+
+#btn-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin-bottom: 20px;
+    width: 225px;
+    border: 1px solid black;
+}
+
+button {
+    width: 75px;
+    height: 50px;
+    font-size: 30px;
+}
