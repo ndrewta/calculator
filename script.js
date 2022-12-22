@@ -52,7 +52,7 @@ const btnContainer = document.createElement('div')
 btnContainer.setAttribute('id', 'btn-container')
 container.appendChild(btnContainer)
 
-for (i = 0; i <= 9; i++) {
+for (i = 7; i <= 9; i++) {
     const btn = document.createElement('button')
     btn.setAttribute('id', `btn-${[i]}`)
     btn.textContent = i
@@ -61,26 +61,51 @@ for (i = 0; i <= 9; i++) {
     btnContainer.appendChild(btn)
 }
 
-const btnClear = document.createElement('button')
-btnClear.setAttribute('id', 'btn-clear')
-btnClear.textContent = 'C'
-btnClear.addEventListener('click', clear)
-btnContainer.appendChild(btnClear)
+const btnDivide = document.createElement('button')
+btnDivide.setAttribute('id', 'btn-divide')
+btnDivide.textContent = '÷'
+btnContainer.appendChild(btnDivide)
+
+for (i = 4; i <= 6; i++) {
+    const btn = document.createElement('button')
+    btn.setAttribute('id', `btn-${[i]}`)
+    btn.textContent = i
+    btn.value = i
+    btn.addEventListener('click', e => outputNumber(e.target))
+    btnContainer.appendChild(btn)
+}
+
+const btnMultiply = document.createElement('button')
+btnMultiply.setAttribute('id', 'btn-multiply')
+btnMultiply.textContent = 'x'
+btnContainer.appendChild(btnMultiply)
+
+for (i = 1; i <= 3; i++) {
+    const btn = document.createElement('button')
+    btn.setAttribute('id', `btn-${[i]}`)
+    btn.textContent = i
+    btn.value = i
+    btn.addEventListener('click', e => outputNumber(e.target))
+    btnContainer.appendChild(btn)
+}
 
 const btnSubtract = document.createElement('button')
 btnSubtract.setAttribute('id', 'btn-subtract')
 btnSubtract.textContent = '−'
 btnContainer.appendChild(btnSubtract)
 
-const btnMultiply = document.createElement('button')
-btnMultiply.setAttribute('id', 'btn-multiply')
-btnMultiply.textContent = '×'
-btnContainer.appendChild(btnMultiply)
+const btnClear = document.createElement('button')
+btnClear.setAttribute('id', 'btn-clear')
+btnClear.textContent = 'C'
+btnClear.addEventListener('click', clear)
+btnContainer.appendChild(btnClear)
 
-const btnDivide = document.createElement('button')
-btnDivide.setAttribute('id', 'btn-divide')
-btnDivide.textContent = '÷'
-btnContainer.appendChild(btnDivide)
+const btn0 = document.createElement('button')
+btn0.setAttribute('id', `btn-0`)
+btn0.textContent = 0
+btn0.value = 0
+btn0.addEventListener('click', e => outputNumber(e.target))
+btnContainer.appendChild(btn0)
 
 const btnEqual = document.createElement('button')
 btnEqual.setAttribute('id', 'btn-equal')
@@ -92,16 +117,3 @@ btnAdd.setAttribute('id', 'btn-add')
 btnAdd.textContent = '+'
 btnContainer.appendChild(btnAdd)
 
-const btn0 = document.getElementById('btn-0')
-const btn3 = document.getElementById('btn-3')
-const btn6 = document.getElementById('btn-6')
-const btn9 = document.getElementById('btn-9')
-const btnC = document.getElementById('btn-clear')
-const btnD = document.getElementById('btn-divide')
-const btnMulti = document.getElementById('btn-multiply')
-const btnP = document.getElementById('btn-add')
-const btnMin = document.getElementById('btn-subtract')
-btnC.after(btn0)
-btn3.after(btnD)
-btn6.after(btnMulti)
-btn9.after(btnMin)
