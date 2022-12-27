@@ -1,1 +1,2 @@
-This project will have a working calculator with a GUI.
+This is a calculator. 
+Feel free to play around.

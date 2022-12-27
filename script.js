@@ -46,9 +46,8 @@ function storeNumbers(operator) {
     if (operator.value == '=') {
         if (!firstNum) {
             console.log("'=' and !firstNum")
-            outputBox.textContent = 0
             screenOutput = ""
-            firstNum = 0
+            firstNum = parseInt(outputBox.textContent)
             secondNum = ""
         } else if (!secondNum) {
             if (addFlag == true || subtractFlag == true || multiplyFlag == true || divideFlag == true) {
@@ -66,16 +65,18 @@ function storeNumbers(operator) {
                 firstNum = finalSum
             } else {
                 console.log("'=' and secondNum and else")
-                secondNum = parseInt(outputBox.textContent)
-                finalSum = operate(firstNum, secondNum)
+                finalSum = firstNum
                 outputBox.textContent = finalSum
                 screenOutput = ""
-                firstNum = finalSum
                 secondNum = ""
             } 
         }
     } else {
-        if (equalFlag) {
+        if (equalFlag && !firstNum) {
+            console.log("Not '=' and equalFlag + firstNum check")
+            screenOutput = ""
+            equalFlag = false
+        } else if (equalFlag) {
             console.log("Not '=' and equalFlag check")
             screenOutput = ""
             outputBox.textContent = finalSum
@@ -106,6 +107,9 @@ function clear() {
     outputBox.textContent = "0"
     firstNum = ""
     secondNum = ""
+    finalSum = ""
+    resetFlags()
+    equalFlag = false
 }
 
 function resetFlags() {
