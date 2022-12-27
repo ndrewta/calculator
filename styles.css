@@ -15,12 +15,12 @@ body {
 
 #output-box {
     border: 1px solid black;
-    width: 290px;
+    max-width: 290px;
     padding: 5px;
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 30px;
-    direction: rtl;
+    text-align: right;
 }
 
 #btn-container {
