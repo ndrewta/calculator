@@ -36,70 +36,135 @@ function outputNumber(e) {
     if (e.value == 0 && screenOutput == "") {
         screenOutput = ""
         outputBox.textContent = "0"
+    } else if (screenOutput == "-0") {
+        screenOutput = "-" + e.value
+        outputBox.textContent = screenOutput
     } else {
         screenOutput += e.value
         outputBox.textContent = screenOutput
     }
 }
 
+function switchPosNeg() {
+    x = parseFloat(outputBox.textContent)
+
+    if (x > 0) {
+            y = parseFloat(outputBox.textContent = "-" + x)
+            screenOutput = y
+
+            if (firstNum) {
+                firstNum = y
+                finalSum = y
+            }
+    } else if (x <= 0) {
+        y = Math.abs(x)
+        outputBox.textContent = y
+        screenOutput = y
+
+        if (firstNum) {
+            firstNum = y
+            finalSum = y
+        }
+    }
+}
+
+function decimalPoint(e) {
+    if (decimalFlag == false) {
+        if (screenOutput == "") {
+            screenOutput = "0."
+            outputBox.textContent = screenOutput
+        } else {
+            screenOutput += e.value
+            outputBox.textContent = screenOutput
+        }
+    }
+
+    activateFlags(e)
+}
+
+function backspace(e) {
+    if (e.value == '⌫' && screenOutput == "") {
+        screenOutput = ""
+        outputBox.textContent = "0"
+    } else if (e.value == '⌫') {
+        if (outputBox.textContent) {
+            x = outputBox.textContent
+            y = x.toString().split('').slice(0, -1).join('')
+            screenOutput = y
+            outputBox.textContent = y
+
+            if (outputBox.textContent == "") {
+                outputBox.textContent = "0"
+            } else if (outputBox.textContent == "-"){
+                outputBox.textContent = "0"
+                screenOutput = ""
+            }
+        }
+    }
+
+    x = outputBox.textContent
+    if (!x.includes(".")) {
+        decimalFlag = false
+    }
+}
+
 function storeNumbers(operator) {
-    if (operator.value == '=') {
+    if (operator.value == '-' && outputBox.textContent == "0") {
+        screenOutput = ""
+        screenOutput += "-0"
+        outputBox.textContent = screenOutput
+
+    } else if (operator.value == '=') {
         if (!firstNum) {
-            console.log("'=' and !firstNum")
-            screenOutput = ""
-            firstNum = parseInt(outputBox.textContent)
+            firstNum = parseFloat(outputBox.textContent)
             secondNum = ""
         } else if (!secondNum) {
             if (addFlag == true || subtractFlag == true || multiplyFlag == true || divideFlag == true) {
-                console.log("'=' and secondNum and opeator flags check")
-                secondNum = parseInt(outputBox.textContent)
+                secondNum = parseFloat(outputBox.textContent)
                 finalSum = operate(firstNum, secondNum)
                 outputBox.textContent = finalSum
                 screenOutput = ""
                 firstNum = finalSum
                 secondNum = ""
             } else if (finalSum) {
-                console.log("'=' and !secondNum and finalSum check")
                 outputBox.textContent = finalSum
                 screenOutput = ""
                 firstNum = finalSum
             } else {
-                console.log("'=' and secondNum and else")
                 finalSum = firstNum
                 outputBox.textContent = finalSum
                 screenOutput = ""
                 secondNum = ""
             } 
         }
-    } else {
-        if (equalFlag && !firstNum) {
-            console.log("Not '=' and equalFlag + firstNum check")
-            screenOutput = ""
-            equalFlag = false
-        } else if (equalFlag) {
-            console.log("Not '=' and equalFlag check")
-            screenOutput = ""
-            outputBox.textContent = finalSum
-            equalFlag = false
+        activateFlags(operator)
         } else {
-            if (!firstNum) {
-                console.log("Not '=' and !firstNum")
-                firstNum = parseInt(outputBox.textContent)
+            if (equalFlag && !firstNum) {
                 screenOutput = ""
+                equalFlag = false
+            } else if (equalFlag) {
+                screenOutput = ""
+                outputBox.textContent = finalSum
                 equalFlag = false
             } else {
-                console.log("Not '=' and else")
-                secondNum = parseInt(outputBox.textContent)
-                finalSum = operate(firstNum, secondNum)
-                outputBox.textContent = finalSum
-                screenOutput = ""
-                firstNum = finalSum
-                secondNum = ""
-                equalFlag = false
+                if (!firstNum) {
+                    firstNum = parseFloat(outputBox.textContent)
+                    screenOutput = ""
+                    equalFlag = false
+                } else {
+                    secondNum = parseFloat(outputBox.textContent)
+                    finalSum = operate(firstNum, secondNum)
+                    outputBox.textContent = finalSum
+                    screenOutput = ""
+                    firstNum = finalSum
+                    secondNum = ""
+                    equalFlag = false
+                }
             }
+            activateFlags(operator)
         }
-    }
-    activateFlags(operator)
+        
+    decimalFlag = false
 }
 
 function clear() {
@@ -117,24 +182,22 @@ function resetFlags() {
     subtractFlag = false
     divideFlag = false
     multiplyFlag = false
+    decimalFlag = false
 }
 
 function activateFlags(operator) {
     if (operator.value == '+') {
         addFlag = true
-        console.log("addFlag: " + addFlag)
     } else if (operator.value == '-') {
         subtractFlag = true
-        console.log("subtractFlag: " + subtractFlag)
     } else if (operator.value == '÷') {
         divideFlag = true
-        console.log("divideFlag: " + divideFlag)
     } else if (operator.value == 'x') {
         multiplyFlag = true
-        console.log("multiplyFlag: " + multiplyFlag)
     } else if (operator.value == '=') {
         equalFlag = true
-        console.log("equalFlag: " + equalFlag)
+    } else if (operator.value == '.') {
+        decimalFlag = true
     }
 }
 
@@ -159,6 +222,7 @@ let subtractFlag = false
 let divideFlag = false
 let multiplyFlag = false
 let equalFlag = false
+let decimalFlag = false
 
 const container = document.createElement('div')
 container.setAttribute('class', 'container')
@@ -173,7 +237,25 @@ const btnContainer = document.createElement('div')
 btnContainer.setAttribute('id', 'btn-container')
 container.appendChild(btnContainer)
 
-createButtons(7, 9)
+const btnClear = document.createElement('button')
+btnClear.setAttribute('id', 'btn-clear')
+btnClear.textContent = 'AC'
+btnClear.addEventListener('click', clear)
+btnContainer.appendChild(btnClear)
+
+const btnSwitch = document.createElement('button')
+btnSwitch.setAttribute('id', 'btn-switch')
+btnSwitch.textContent = '+/−'
+btnSwitch.value = 'switch'
+btnSwitch.addEventListener('click', switchPosNeg)
+btnContainer.appendChild(btnSwitch)
+
+const btnDelete = document.createElement('button')
+btnDelete.setAttribute('id', 'btn-delete')
+btnDelete.textContent = '⌫'
+btnDelete.value = '⌫'
+btnDelete.addEventListener('click', e => backspace(e.target))
+btnContainer.appendChild(btnDelete)
 
 const btnDivide = document.createElement('button')
 btnDivide.setAttribute('id', 'btn-divide')
@@ -182,7 +264,7 @@ btnDivide.value = '÷'
 btnDivide.addEventListener('click', e => storeNumbers(e.target))
 btnContainer.appendChild(btnDivide)
 
-createButtons(4, 6)
+createButtons(7, 9)
 
 const btnMultiply = document.createElement('button')
 btnMultiply.setAttribute('id', 'btn-multiply')
@@ -191,7 +273,7 @@ btnMultiply.value = 'x'
 btnMultiply.addEventListener('click', e => storeNumbers(e.target))
 btnContainer.appendChild(btnMultiply)
 
-createButtons(1, 3)
+createButtons(4, 6)
 
 const btnSubtract = document.createElement('button')
 btnSubtract.setAttribute('id', 'btn-subtract')
@@ -200,25 +282,7 @@ btnSubtract.value = '-'
 btnSubtract.addEventListener('click', e => storeNumbers(e.target))
 btnContainer.appendChild(btnSubtract)
 
-const btnClear = document.createElement('button')
-btnClear.setAttribute('id', 'btn-clear')
-btnClear.textContent = 'C'
-btnClear.addEventListener('click', clear)
-btnContainer.appendChild(btnClear)
-
-const btn0 = document.createElement('button')
-btn0.setAttribute('id', `btn-0`)
-btn0.textContent = 0
-btn0.value = 0
-btn0.addEventListener('click', e => outputNumber(e.target))
-btnContainer.appendChild(btn0)
-
-const btnEqual = document.createElement('button')
-btnEqual.setAttribute('id', 'btn-equal')
-btnEqual.textContent = '='
-btnEqual.value = '='
-btnEqual.addEventListener('click', e => storeNumbers(e.target))
-btnContainer.appendChild(btnEqual)
+createButtons(1, 3)
 
 const btnAdd = document.createElement('button')
 btnAdd.setAttribute('id', 'btn-add')
@@ -227,3 +291,23 @@ btnAdd.value = '+'
 btnAdd.addEventListener('click', e => storeNumbers(e.target))
 btnContainer.appendChild(btnAdd)
 
+const btn0 = document.createElement('button')
+btn0.setAttribute('id', `btn-0`)
+btn0.textContent = 0
+btn0.value = 0
+btn0.addEventListener('click', e => outputNumber(e.target))
+btnContainer.appendChild(btn0)
+
+const btnDecimal = document.createElement('button')
+btnDecimal.setAttribute('id', 'btn-decimal')
+btnDecimal.textContent = '.'
+btnDecimal.value = '.'
+btnDecimal.addEventListener('click', e => decimalPoint(e.target))
+btnContainer.appendChild(btnDecimal)
+
+const btnEqual = document.createElement('button')
+btnEqual.setAttribute('id', 'btn-equal')
+btnEqual.textContent = '='
+btnEqual.value = '='
+btnEqual.addEventListener('click', e => storeNumbers(e.target))
+btnContainer.appendChild(btnEqual)

@@ -15,17 +15,17 @@ body {
 
 #output-box {
     border: 1px solid black;
-    max-width: 290px;
+    width: 290px;
     padding: 5px;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-size: 30px;
+    font-size: 25px;
     text-align: right;
 }
 
 #btn-container {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
+    display: flex;
+    flex-wrap: wrap;
     margin-bottom: 20px;
     width: 300px;
     border: 1px solid black;
@@ -34,5 +34,9 @@ body {
 button {
     width: 75px;
     height: 50px;
-    font-size: 30px;
+    font-size: 27px;
+}
+
+#btn-0 {
+    width: 150px;
 }
