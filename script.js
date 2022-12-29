@@ -39,7 +39,7 @@ function outputNumber(e) {
     } else if (screenOutput == "-0") {
         screenOutput = "-" + e.value
         outputBox.textContent = screenOutput
-    } else {
+    } else if (outputBox.textContent.length <= 12) {
         screenOutput += e.value
         outputBox.textContent = screenOutput
     }
@@ -205,6 +205,7 @@ function createButtons(min, max) {
     for (i = min; i <= max; i++) {
         const btn = document.createElement('button')
         btn.setAttribute('id', `btn-${[i]}`)
+        btn.setAttribute('class', 'btn-group-2')
         btn.textContent = i
         btn.value = i
         btn.addEventListener('click', e => outputNumber(e.target))
@@ -239,12 +240,14 @@ container.appendChild(btnContainer)
 
 const btnClear = document.createElement('button')
 btnClear.setAttribute('id', 'btn-clear')
+btnClear.setAttribute('class', 'btn-group-1')
 btnClear.textContent = 'AC'
 btnClear.addEventListener('click', clear)
 btnContainer.appendChild(btnClear)
 
 const btnSwitch = document.createElement('button')
 btnSwitch.setAttribute('id', 'btn-switch')
+btnSwitch.setAttribute('class', 'btn-group-1')
 btnSwitch.textContent = '+/−'
 btnSwitch.value = 'switch'
 btnSwitch.addEventListener('click', switchPosNeg)
@@ -252,6 +255,7 @@ btnContainer.appendChild(btnSwitch)
 
 const btnDelete = document.createElement('button')
 btnDelete.setAttribute('id', 'btn-delete')
+btnDelete.setAttribute('class', 'btn-group-1')
 btnDelete.textContent = '⌫'
 btnDelete.value = '⌫'
 btnDelete.addEventListener('click', e => backspace(e.target))
@@ -259,6 +263,7 @@ btnContainer.appendChild(btnDelete)
 
 const btnDivide = document.createElement('button')
 btnDivide.setAttribute('id', 'btn-divide')
+btnDivide.setAttribute('class', 'btn-group-3')
 btnDivide.textContent = '÷'
 btnDivide.value = '÷'
 btnDivide.addEventListener('click', e => storeNumbers(e.target))
@@ -268,6 +273,7 @@ createButtons(7, 9)
 
 const btnMultiply = document.createElement('button')
 btnMultiply.setAttribute('id', 'btn-multiply')
+btnMultiply.setAttribute('class', 'btn-group-3')
 btnMultiply.textContent = 'x'
 btnMultiply.value = 'x'
 btnMultiply.addEventListener('click', e => storeNumbers(e.target))
@@ -277,6 +283,7 @@ createButtons(4, 6)
 
 const btnSubtract = document.createElement('button')
 btnSubtract.setAttribute('id', 'btn-subtract')
+btnSubtract.setAttribute('class', 'btn-group-3')
 btnSubtract.textContent = '−'
 btnSubtract.value = '-'
 btnSubtract.addEventListener('click', e => storeNumbers(e.target))
@@ -286,6 +293,7 @@ createButtons(1, 3)
 
 const btnAdd = document.createElement('button')
 btnAdd.setAttribute('id', 'btn-add')
+btnAdd.setAttribute('class', 'btn-group-3')
 btnAdd.textContent = '+'
 btnAdd.value = '+'
 btnAdd.addEventListener('click', e => storeNumbers(e.target))
@@ -293,6 +301,7 @@ btnContainer.appendChild(btnAdd)
 
 const btn0 = document.createElement('button')
 btn0.setAttribute('id', `btn-0`)
+btn0.setAttribute('class', 'btn-group-2')
 btn0.textContent = 0
 btn0.value = 0
 btn0.addEventListener('click', e => outputNumber(e.target))
@@ -300,6 +309,7 @@ btnContainer.appendChild(btn0)
 
 const btnDecimal = document.createElement('button')
 btnDecimal.setAttribute('id', 'btn-decimal')
+btnDecimal.setAttribute('class', 'btn-group-3')
 btnDecimal.textContent = '.'
 btnDecimal.value = '.'
 btnDecimal.addEventListener('click', e => decimalPoint(e.target))
@@ -307,6 +317,7 @@ btnContainer.appendChild(btnDecimal)
 
 const btnEqual = document.createElement('button')
 btnEqual.setAttribute('id', 'btn-equal')
+btnEqual.setAttribute('class', 'btn-group-3')
 btnEqual.textContent = '='
 btnEqual.value = '='
 btnEqual.addEventListener('click', e => storeNumbers(e.target))

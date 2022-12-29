@@ -2,6 +2,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: Verdana, Tahoma, sans-serif
 }
 
 .container {
@@ -11,6 +12,7 @@ body {
     width: 350px;
     border: 1px solid black;
     margin-top: 15%;
+    background-color:rgb(110, 218, 186)
 }
 
 #output-box {
@@ -21,6 +23,7 @@ body {
     margin-bottom: 20px;
     font-size: 25px;
     text-align: right;
+    background-color:rgb(255, 255, 255)
 }
 
 #btn-container {
@@ -39,4 +42,16 @@ button {
 
 #btn-0 {
     width: 150px;
+}
+
+.btn-group-1 {
+    background-color: rgb(202, 161, 235);
+}
+
+.btn-group-2 {
+    background-color:rgb(141, 157, 231);
+}
+
+.btn-group-3 {
+    background-color:rgb(230, 231, 155)
 }
