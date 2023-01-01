@@ -33,14 +33,14 @@ function operate(a, b) {
 }
 
 function outputNumber(e) {
-    if (e.value == 0 && screenOutput == "") {
+    if (e == 0 && screenOutput == "") {
         screenOutput = ""
         outputBox.textContent = "0"
     } else if (screenOutput == "-0") {
-        screenOutput = "-" + e.value
+        screenOutput = "-" + e
         outputBox.textContent = screenOutput
     } else if (outputBox.textContent.length <= 12) {
-        screenOutput += e.value
+        screenOutput += e
         outputBox.textContent = screenOutput
     }
 }
@@ -68,25 +68,24 @@ function switchPosNeg() {
     }
 }
 
-function decimalPoint(e) {
+function decimalPoint() {
     if (decimalFlag == false) {
         if (screenOutput == "") {
             screenOutput = "0."
             outputBox.textContent = screenOutput
         } else {
-            screenOutput += e.value
+            screenOutput += "."
             outputBox.textContent = screenOutput
         }
     }
-
-    activateFlags(e)
+    decimalFlag = true
 }
 
-function backspace(e) {
-    if (e.value == '⌫' && screenOutput == "") {
+function backspace() {
+    if (screenOutput == "") {
         screenOutput = ""
         outputBox.textContent = "0"
-    } else if (e.value == '⌫') {
+    } else {
         if (outputBox.textContent) {
             x = outputBox.textContent
             y = x.toString().split('').slice(0, -1).join('')
@@ -101,20 +100,26 @@ function backspace(e) {
             }
         }
     }
-
-    x = outputBox.textContent
-    if (!x.includes(".")) {
-        decimalFlag = false
-    }
+    decimalFlagCheck()
 }
 
 function storeNumbers(operator) {
-    if (operator.value == '-' && outputBox.textContent == "0") {
+    minusOperatorCheck(operator)
+    equalOperatorCheck(operator)
+    EqualFlagCheck(operator)        
+    decimalFlag = false
+}
+
+function minusOperatorCheck(operator) {
+    if (operator == '-' && outputBox.textContent == "0") {
         screenOutput = ""
         screenOutput += "-0"
         outputBox.textContent = screenOutput
+    }
+}
 
-    } else if (operator.value == '=') {
+function equalOperatorCheck(operator) {
+    if (operator == '=' || operator == 'Enter') {
         if (!firstNum) {
             firstNum = parseFloat(outputBox.textContent)
             secondNum = ""
@@ -138,33 +143,33 @@ function storeNumbers(operator) {
             } 
         }
         activateFlags(operator)
+    }
+}
+
+function EqualFlagCheck(operator) {
+    if (equalFlag && !firstNum) {
+        screenOutput = ""
+        equalFlag = false
+    } else if (equalFlag) {
+        screenOutput = ""
+        outputBox.textContent = finalSum
+        equalFlag = false
+    } else {
+        if (!firstNum) {
+            firstNum = parseFloat(outputBox.textContent)
+            screenOutput = ""
+            equalFlag = false
         } else {
-            if (equalFlag && !firstNum) {
-                screenOutput = ""
-                equalFlag = false
-            } else if (equalFlag) {
-                screenOutput = ""
-                outputBox.textContent = finalSum
-                equalFlag = false
-            } else {
-                if (!firstNum) {
-                    firstNum = parseFloat(outputBox.textContent)
-                    screenOutput = ""
-                    equalFlag = false
-                } else {
-                    secondNum = parseFloat(outputBox.textContent)
-                    finalSum = operate(firstNum, secondNum)
-                    outputBox.textContent = finalSum
-                    screenOutput = ""
-                    firstNum = finalSum
-                    secondNum = ""
-                    equalFlag = false
-                }
-            }
-            activateFlags(operator)
+            secondNum = parseFloat(outputBox.textContent)
+            finalSum = operate(firstNum, secondNum)
+            outputBox.textContent = finalSum
+            screenOutput = ""
+            firstNum = finalSum
+            secondNum = ""
+            equalFlag = false
         }
-        
-    decimalFlag = false
+    }
+    activateFlags(operator)
 }
 
 function clear() {
@@ -186,15 +191,15 @@ function resetFlags() {
 }
 
 function activateFlags(operator) {
-    if (operator.value == '+') {
+    if (operator == '+') {
         addFlag = true
-    } else if (operator.value == '-') {
+    } else if (operator == '-') {
         subtractFlag = true
-    } else if (operator.value == '÷') {
+    } else if (operator == '/') {
         divideFlag = true
-    } else if (operator.value == 'x') {
+    } else if (operator == '*') {
         multiplyFlag = true
-    } else if (operator.value == '=') {
+    } else if (operator == '=' || operator == 'Enter') {
         equalFlag = true
     } else if (operator.value == '.') {
         decimalFlag = true
@@ -208,8 +213,26 @@ function createButtons(min, max) {
         btn.setAttribute('class', 'btn-group-2')
         btn.textContent = i
         btn.value = i
-        btn.addEventListener('click', e => outputNumber(e.target))
+        btn.addEventListener('click', e => convertNumberValue(e))
         btnContainer.appendChild(btn)
+    }
+}
+
+function convertNumberValue(e) {
+    const number = e.target
+    const value = number.value
+    outputNumber(value)}
+
+function convertOperatorValue(e) {
+    const operator = e.target
+    const value = operator.value
+    console.log((typeof value), value)
+    storeNumbers(value)}
+
+function decimalFlagCheck() {
+    x = outputBox.textContent
+    if (!x.includes(".")) {
+        decimalFlag = false
     }
 }
 
@@ -257,16 +280,15 @@ const btnDelete = document.createElement('button')
 btnDelete.setAttribute('id', 'btn-delete')
 btnDelete.setAttribute('class', 'btn-group-1')
 btnDelete.textContent = '⌫'
-btnDelete.value = '⌫'
-btnDelete.addEventListener('click', e => backspace(e.target))
+btnDelete.addEventListener('click', backspace)
 btnContainer.appendChild(btnDelete)
 
 const btnDivide = document.createElement('button')
 btnDivide.setAttribute('id', 'btn-divide')
 btnDivide.setAttribute('class', 'btn-group-3')
 btnDivide.textContent = '÷'
-btnDivide.value = '÷'
-btnDivide.addEventListener('click', e => storeNumbers(e.target))
+btnDivide.value = '/'
+btnDivide.addEventListener('click', e => convertOperatorValue(e))
 btnContainer.appendChild(btnDivide)
 
 createButtons(7, 9)
@@ -275,8 +297,8 @@ const btnMultiply = document.createElement('button')
 btnMultiply.setAttribute('id', 'btn-multiply')
 btnMultiply.setAttribute('class', 'btn-group-3')
 btnMultiply.textContent = 'x'
-btnMultiply.value = 'x'
-btnMultiply.addEventListener('click', e => storeNumbers(e.target))
+btnMultiply.value = '*'
+btnMultiply.addEventListener('click', e => convertOperatorValue(e))
 btnContainer.appendChild(btnMultiply)
 
 createButtons(4, 6)
@@ -286,7 +308,7 @@ btnSubtract.setAttribute('id', 'btn-subtract')
 btnSubtract.setAttribute('class', 'btn-group-3')
 btnSubtract.textContent = '−'
 btnSubtract.value = '-'
-btnSubtract.addEventListener('click', e => storeNumbers(e.target))
+btnSubtract.addEventListener('click', e => convertOperatorValue(e))
 btnContainer.appendChild(btnSubtract)
 
 createButtons(1, 3)
@@ -296,7 +318,7 @@ btnAdd.setAttribute('id', 'btn-add')
 btnAdd.setAttribute('class', 'btn-group-3')
 btnAdd.textContent = '+'
 btnAdd.value = '+'
-btnAdd.addEventListener('click', e => storeNumbers(e.target))
+btnAdd.addEventListener('click', e => convertOperatorValue(e))
 btnContainer.appendChild(btnAdd)
 
 const btn0 = document.createElement('button')
@@ -304,15 +326,14 @@ btn0.setAttribute('id', `btn-0`)
 btn0.setAttribute('class', 'btn-group-2')
 btn0.textContent = 0
 btn0.value = 0
-btn0.addEventListener('click', e => outputNumber(e.target))
+btn0.addEventListener('click', e => convertNumberValue(e))
 btnContainer.appendChild(btn0)
 
 const btnDecimal = document.createElement('button')
 btnDecimal.setAttribute('id', 'btn-decimal')
-btnDecimal.setAttribute('class', 'btn-group-3')
+btnDecimal.setAttribute('class', 'btn-group-2')
 btnDecimal.textContent = '.'
-btnDecimal.value = '.'
-btnDecimal.addEventListener('click', e => decimalPoint(e.target))
+btnDecimal.addEventListener('click', decimalPoint)
 btnContainer.appendChild(btnDecimal)
 
 const btnEqual = document.createElement('button')
@@ -320,5 +341,20 @@ btnEqual.setAttribute('id', 'btn-equal')
 btnEqual.setAttribute('class', 'btn-group-3')
 btnEqual.textContent = '='
 btnEqual.value = '='
-btnEqual.addEventListener('click', e => storeNumbers(e.target))
+btnEqual.addEventListener('click', e => convertOperatorValue(e))
 btnContainer.appendChild(btnEqual)
+
+document.addEventListener('keydown', e => {
+    const key = e.key
+    const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    const operators = ['+', '-', '*', '/', 'Enter', '=']
+    if (numbers.includes(key)) {
+        outputNumber(key)
+    } else if (operators.includes(key)) {
+        storeNumbers(key)
+    } else if (key == '.') {
+        decimalPoint()
+    } else if (key == 'Backspace') {
+        backspace()
+    }
+})
