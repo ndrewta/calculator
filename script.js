@@ -1,3 +1,15 @@
+let screenOutput = ""
+let firstNum = ""
+let secondNum = ""
+let finalSum = ""
+let addFlag = false
+let subtractFlag = false
+let divideFlag = false
+let multiplyFlag = false
+let equalFlag = false
+let decimalFlag = false
+
+
 function add(a, b) {3
     resetFlags()
     return a + b
@@ -236,17 +248,6 @@ function decimalFlagCheck() {
     }
 }
 
-
-let screenOutput = ""
-let firstNum = ""
-let secondNum = ""
-let finalSum = ""
-let addFlag = false
-let subtractFlag = false
-let divideFlag = false
-let multiplyFlag = false
-let equalFlag = false
-let decimalFlag = false
 
 const container = document.createElement('div')
 container.setAttribute('class', 'container')
